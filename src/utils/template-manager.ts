@@ -1,15 +1,15 @@
 import fs from "fs-extra";
 import path from "path";
 import { ComponentConfig, ComponentFile } from "../types";
-const __dirname = path.resolve(path.dirname(""));
+const dirName = path.resolve(path.dirname(""));
 
 export class TemplateManager {
   private templatesDir: string;
   private targetDir: string;
 
   constructor() {
-    console.log(__dirname);
-    this.templatesDir = path.join(__dirname, "./src/templates");
+    console.log(dirName);
+    this.templatesDir = path.join(dirName, "./src/templates");
     this.targetDir = process.cwd();
   }
 

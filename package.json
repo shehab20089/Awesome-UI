@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "CLI tool for managing UI components",
   "main": "./dist/cli.js",
+  "exports": "./dist/cli.js",
   "type": "module",
   "bin": {
     "awesome-ui-cli": "./dist/cli.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc-esm-fix",
     "start": "node ./dist/cli.js",
     "dev": "node --loader ts-node/esm ./src/cli.ts"
   },
@@ -17,19 +18,20 @@
     "ui",
     "components"
   ],
-  "author": "Your Name",
+  "author": "Shehab Mohsen Mahmoud <https://github.com/shehab20089>",
   "license": "MIT",
   "dependencies": {
-    "@types/fs-extra": "^11.0.4",
     "chalk": "^5.3.0",
     "commander": "^12.1.0",
     "fs-extra": "^11.2.0",
     "ora": "^8.1.1"
   },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.9.0",
     "autoprefixer": "^10.4.20",
     "ts-node": "^10.9.2",
+    "tsc-esm-fix": "^3.1.2",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   }
