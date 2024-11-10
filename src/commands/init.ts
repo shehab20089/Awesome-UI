@@ -1,20 +1,15 @@
-// src/commands/init.ts
-import { promises as fs } from "fs";
-import path from "path";
+import fs from "fs-extra";
+import * as path from "path";
 import ora from "ora";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { execSync } from "child_process";
 
 export async function initProject() {
   const spinner = ora("Initializing project...").start();
 
   try {
     // Create base directories
-    await fs.mkdir("components/ui", { recursive: true });
-    await fs.mkdir("lib", { recursive: true });
+    await fs.mkdir("./src/components/ui", { recursive: true });
+    await fs.mkdir("./src/lib", { recursive: true });
 
     // Create utils.ts
     const utilsContent = `
@@ -25,7 +20,25 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }`;
 
-    await fs.writeFile(path.join("lib", "utils.ts"), utilsContent);
+    await fs.writeFile(path.join("./src/lib", "utils.ts"), utilsContent);
+
+    // Initialize package.json if it doesn't exist
+    try {
+      await fs.access("package.json");
+    } catch {
+      execSync("npm init -y");
+    }
+
+    // Install base dependencies
+    const baseDeps = [
+      "tailwindcss",
+      "postcss",
+      "autoprefixer",
+      "clsx",
+      "tailwind-merge",
+    ];
+
+    execSync(`npm install ${baseDeps.join(" ")} --save-dev`);
 
     spinner.succeed("Project initialized successfully");
   } catch (error) {

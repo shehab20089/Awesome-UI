@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from "commander";
 import { initProject } from "./commands/init.js";
-import { addComponent } from "./commands/add.js";
+import { add } from "./commands/add.js";
 const program = new Command();
 
 program
@@ -17,6 +17,6 @@ program
 program
   .command("add <component>")
   .description("Add a component to your project")
-  .action(addComponent);
+  .action(add);
 
 program.parse();

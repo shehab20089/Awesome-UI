@@ -1,30 +1,50 @@
-import { promises as fs } from "fs";
-import path from "path";
-import ora from "ora";
 import chalk from "chalk";
-import { REGISTRY } from "../utils/registry.js";
+import { REGISTRY } from "../utils/registry";
+import { TemplateManager } from "../utils/template-manager";
+import { DependencyManager } from "../utils/dependency-manager";
+import { TailwindManager } from "../utils/tailwind-manager";
 
-export async function addComponent(componentName: string) {
-  const component = REGISTRY[componentName];
-  if (!component) {
-    console.error(
-      chalk.red(`Component "${componentName}" not found in registry`)
-    );
-    return;
-  }
-
-  const spinner = ora(`Adding ${componentName} component...`).start();
-
+export async function add(componentName: string): Promise<void> {
   try {
-    // Create component files
-    for (const file of component.files) {
-      const filePath = path.join("components/ui", file.name);
-      await fs.writeFile(filePath, file.content);
+    const component = REGISTRY[componentName];
+    if (!component) {
+      throw new Error(`Component "${componentName}" not found in registry`);
     }
 
-    spinner.succeed(`Component "${componentName}" added successfully`);
-  } catch (error) {
-    spinner.fail(`Failed to add component "${componentName}"`);
-    console.error(error);
+    console.log(chalk.blue(`Adding ${component.name} component...`));
+
+    const templateManager = new TemplateManager();
+    const dependencyManager = new DependencyManager();
+    // const tailwindManager = new TailwindManager();
+
+    // Install dependencies
+    console.log("Installing dependencies...");
+    await dependencyManager.installDependencies(component);
+
+    // Copy component files
+    console.log("Copying component files...");
+    await templateManager.copyComponentFiles(component);
+
+    // // Update Tailwind config
+    // console.log("Updating Tailwind configuration...");
+    // await tailwindManager.updateConfig(component);
+
+    console.log(
+      chalk.green(`✓ Successfully added ${component.name} component!`)
+    );
+
+    // Show next steps
+    console.log("\nNext steps:");
+    console.log("1. Import the component:");
+    console.log(
+      chalk.cyan(
+        `   import { ${componentName} } from "@/components/ui/${componentName}"`
+      )
+    );
+    console.log("2. Use it in your application:");
+    console.log(chalk.cyan(`   <${componentName}>Content</${componentName}>`));
+  } catch (error: any) {
+    console.error(chalk.red(`Error: ${error?.message}`));
+    process.exit(1);
   }
 }

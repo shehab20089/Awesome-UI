@@ -5,7 +5,7 @@
   "main": "./dist/cli.js",
   "type": "module",
   "bin": {
-    "your-ui-cli": "./dist/cli.js"
+    "awesome-ui-cli": "./dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
@@ -20,8 +20,10 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "commander": "^12.1.0",
+    "@types/fs-extra": "^11.0.4",
     "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "fs-extra": "^11.2.0",
     "ora": "^8.1.1"
   },
   "devDependencies": {
