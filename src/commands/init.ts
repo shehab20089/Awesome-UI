@@ -11,6 +11,26 @@ export async function initProject() {
     await fs.mkdir("./src/components/ui", { recursive: true });
     await fs.mkdir("./src/lib", { recursive: true });
 
+    // Copy tailwind config from project root
+    const templateConfigPath = path.join(
+      __dirname,
+      "../..",
+      "tailwind.config.js"
+    );
+    const targetConfigPath = path.join(process.cwd(), "tailwind.config.ts");
+    await fs.copy(templateConfigPath, targetConfigPath);
+
+    // Create postcss.config.js
+    const postcssConfig = `
+        module.exports = {
+          plugins: {
+            tailwindcss: {},
+            autoprefixer: {},
+          },
+        }`;
+
+    await fs.writeFile("postcss.config.js", postcssConfig);
+
     // Create utils.ts
     const utilsContent = `
 import { type ClassValue, clsx } from "clsx"
