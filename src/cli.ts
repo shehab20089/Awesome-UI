@@ -11,7 +11,7 @@ program
 
 program
   .command("init")
-  .description("Initialize the project with required dependencies")
+  .description("Initialize awesome-ui-cli library with required dependencies")
   .action(initProject);
 
 program
