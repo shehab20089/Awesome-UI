@@ -15,7 +15,7 @@ export async function initProject() {
     const templateConfigPath = path.join(
       __dirname,
       "../..",
-      "tailwind.config.js"
+      "tailwind.config.ts"
     );
     const targetConfigPath = path.join(process.cwd(), "tailwind.config.ts");
     await fs.copy(templateConfigPath, targetConfigPath);
@@ -29,7 +29,7 @@ export async function initProject() {
           },
         }`;
 
-    await fs.writeFile("postcss.config.js", postcssConfig);
+    await fs.writeFile("postcss.config.cjs", postcssConfig);
 
     // Create utils.ts
     const utilsContent = `
@@ -56,6 +56,7 @@ export function cn(...inputs: ClassValue[]) {
       "autoprefixer",
       "clsx",
       "tailwind-merge",
+      "tailwindcss-animate",
     ];
 
     execSync(`npm install ${baseDeps.join(" ")} --save-dev`);
