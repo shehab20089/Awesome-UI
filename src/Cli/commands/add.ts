@@ -2,7 +2,6 @@ import chalk from "chalk";
 import { REGISTRY } from "../utils/registry";
 import { TemplateManager } from "../utils/template-manager";
 import { DependencyManager } from "../utils/dependency-manager";
-import { TailwindManager } from "../utils/tailwind-manager";
 
 export async function add(componentName: string): Promise<void> {
   try {
@@ -15,25 +14,20 @@ export async function add(componentName: string): Promise<void> {
 
     const templateManager = new TemplateManager();
     const dependencyManager = new DependencyManager();
-    // const tailwindManager = new TailwindManager();
 
-    // Install dependencies
+    // Install dependencies first
     console.log("Installing dependencies...");
     await dependencyManager.installDependencies(component);
 
-    // Copy component files
+    // Then copy component files
     console.log("Copying component files...");
     await templateManager.copyComponentFiles(component);
-
-    // // Update Tailwind config
-    // console.log("Updating Tailwind configuration...");
-    // await tailwindManager.updateConfig(component);
 
     console.log(
       chalk.green(`✓ Successfully added ${component.name} component!`)
     );
 
-    // Show next steps
+    // Show usage instructions
     console.log("\nNext steps:");
     console.log("1. Import the component:");
     console.log(
