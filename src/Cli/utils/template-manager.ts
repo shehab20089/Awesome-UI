@@ -1,14 +1,12 @@
 import fs from "fs-extra";
 import path from "path";
 import { ComponentConfig, ComponentFile } from "../types";
+import { resolvePackagePath } from "./paths";
 
 export class TemplateManager {
-  private templatesDir: string;
   private targetDir: string;
 
   constructor() {
-    // Set templates directory relative to package root
-    this.templatesDir = path.join(__dirname, "..", "..", "src", "templates");
     this.targetDir = process.cwd();
   }
 
@@ -26,10 +24,7 @@ export class TemplateManager {
     file: ComponentFile,
     componentName: string
   ): Promise<void> {
-    const sourcePath = path.join(
-      this.templatesDir,
-      file.template // Removed 'components' from path
-    );
+    const sourcePath = resolvePackagePath("src", "templates", file.template);
     const targetPath = this.getTargetPath(file, componentName);
 
     try {
@@ -41,7 +36,6 @@ export class TemplateManager {
   }
 
   private getTargetPath(file: ComponentFile, componentName: string): string {
-    // All component files go into components/ui directory
     return path.join(this.targetDir, "src", "components", "ui", file.name);
   }
 }

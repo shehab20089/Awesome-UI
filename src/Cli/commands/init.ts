@@ -2,6 +2,7 @@ import fs from "fs-extra";
 import * as path from "path";
 import ora from "ora";
 import { execSync } from "child_process";
+import { resolvePackagePath } from "../utils/paths";
 
 export async function initProject() {
   const spinner = ora("Initializing Awesome UI...").start();
@@ -11,33 +12,31 @@ export async function initProject() {
     await fs.mkdir("./src/components/ui", { recursive: true });
     await fs.mkdir("./src/lib", { recursive: true });
 
-    // Copy style files from project root
     // Define config files to copy
     const configFiles = [
       {
         name: "Tailwind config",
-        template: path.join(__dirname, "../..", "tailwind.config.ts"),
+        template: resolvePackagePath(
+          "tailwind.config.ts" // Moved up one level since it's in templates root
+        ),
         target: path.join(process.cwd(), "tailwind.config.ts"),
       },
       {
         name: "PostCSS config",
-        template: path.join(__dirname, "../..", "postcss.config.cjs"),
+        template: resolvePackagePath(
+          "postcss.config.cjs" // Moved up one level since it's in templates root
+        ),
         target: path.join(process.cwd(), "postcss.config.cjs"),
       },
       {
         name: "Global CSS",
-        template: path.join(__dirname, "../..", "src/global.css"),
+        template: resolvePackagePath("src", "global.css"),
         target: path.join(process.cwd(), "src/global.css"),
       },
     ];
 
     // Copy each config file
     for (const config of configFiles) {
-      if (await fs.pathExists(config.target)) {
-        spinner.warn(`${config.name} already exists, skipping...`);
-        continue;
-      }
-
       await fs.ensureDir(path.dirname(config.target));
       await fs.copy(config.template, config.target);
       spinner.succeed(`Created ${config.name}`);
