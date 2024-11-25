@@ -52,7 +52,13 @@ import { Meta, Source } from "@storybook/blocks";
         <span className="emoji">⚙️</span>
         <h4 className="sb-section-item-heading">Vite Configuration</h4>
       </div>
-      <p className="sb-section-item-paragraph">To use this library with Vite, update your vite.config.ts to include the following path aliases:</p>
+      <p className="sb-section-item-paragraph">First, install the required type definitions:</p>
+      <Source
+        language="bash"
+        code="npm install -D @types/node"
+        className="code-block"
+      />
+      <p className="sb-section-item-paragraph">Then update your vite.config.ts to include the following path aliases:</p>
       <Source
         language="typescript"
         code={`import path from 'path'
@@ -61,9 +67,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@/components': path.resolve(__dirname, './src/components'),
-      '@/lib': path.resolve(__dirname, './src/lib')
+      "@": path.resolve(__dirname, "./src"),
     }
   }
 })`}
@@ -76,12 +80,41 @@ export default defineConfig({
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/lib/*": ["./src/lib/*"]
+      "@/*": ["./src/*"]
     }
   }
 }`}
+        className="code-block"
+      />
+
+      <p className="sb-section-item-paragraph">Edit tsconfig.app.json file to resolve paths for your IDE:</p>
+      <Source
+        language="json"
+        code={`{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  }
+}`}
+        className="code-block"
+      />
+
+      <p className="sb-section-item-paragraph">Import the global CSS in your root component (App.tsx):</p>
+      <Source
+        language="typescript"
+        code={`import './globals.css'
+
+function App() {
+  return (
+    // Your app content
+  )
+}
+
+export default App`}
         className="code-block"
       />
     </div>
