@@ -11,7 +11,7 @@ export async function initProject() {
     await fs.mkdir("./src/components/ui", { recursive: true });
     await fs.mkdir("./src/lib", { recursive: true });
 
-    // Copy tailwind config from project root
+    // Copy style files from project root
     // Define config files to copy
     const configFiles = [
       {
@@ -54,11 +54,14 @@ export function cn(...inputs: ClassValue[]) {
 
     await fs.writeFile(path.join("./src/lib", "utils.ts"), utilsContent);
 
-    // Initialize package.json if it doesn't exist
+    // Check if package.json exists
     try {
       await fs.access("package.json");
     } catch {
-      execSync("npm init -y");
+      spinner.fail(
+        "No React project detected in current directory. Please run this command in a React project root directory."
+      );
+      process.exit(1);
     }
 
     // Install base dependencies
@@ -73,9 +76,9 @@ export function cn(...inputs: ClassValue[]) {
 
     execSync(`npm install ${baseDeps.join(" ")} --save-dev`);
 
-    spinner.succeed("Project initialized successfully");
+    spinner.succeed("Awesome UI initialized successfully");
   } catch (error) {
-    spinner.fail("Failed to initialize project");
+    spinner.fail("Failed to initialize Awesome UI");
     console.error(error);
     process.exit(1);
   }
