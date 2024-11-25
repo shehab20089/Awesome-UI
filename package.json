@@ -6,12 +6,16 @@
   "exports": "./dist/cli.js",
   "type": "module",
   "bin": {
-    "awesome-ui-cli": "./dist/cli.js"
+    "awesome-ui-cli": "./src/cli-wrapper.js"
   },
+  "files": [
+    "dist",
+    "src",
+    "tailwind.config.ts",
+    "postcss.config.cjs"
+  ],
   "scripts": {
-    "build": "tsc && tsc-esm-fix",
-    "start": "node ./dist/cli.js",
-    "dev": "node --loader ts-node/esm ./src/cli.ts",
+    "start": "tsx src/cli.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -33,7 +37,8 @@
     "fs-extra": "^11.2.0",
     "ora": "^8.1.1",
     "react": "^18.3.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "tsx": "^4.19.2"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.2",
@@ -54,7 +59,6 @@
     "tailwindcss": "^3.4.15",
     "ts-node": "^10.9.2",
     "tsc-esm-fix": "^3.1.2",
-    "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   }
 }
